@@ -26,6 +26,8 @@ stages:
     - bash: echo $(environment)DeployJob
 
 - stage: QADeploy
+  variables:
+    environment: QA
   dependsOn: Build
   jobs:
   - job: QADeployJob
