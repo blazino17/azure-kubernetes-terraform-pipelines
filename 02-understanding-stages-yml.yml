@@ -16,36 +16,18 @@ stages:
     - bash: echo $(Build.SourceBranchName)
     - bash: echo $(Build.SourceDirectory)
     - bash: echo $(System.DefaultWorkingDirectory)
-    - bash: ls - R $(System.DefaultWorkingDirectory)
+    - bash: ls -R $(System.DefaultWorkingDirectory)
     - bash: echo $(Build.ArtifactStagingDirectory)
-
-  # - job: SecondJob
-  #   steps:
-  #   - bash: echo Build SecondJob
-
-# - stage: DevDeploy
-#   dependsOn: Build
-#   variables:
-#     environment: Dev
-#   jobs:
-#   - job: DevDeployJob
-#     steps:
-#     - bash: echo $(environment)DeployJob
-
-# - stage: QADeploy
-#   variables:
-#     environment: QA
-#   dependsOn: Build
-#   jobs:
-#   - job: QADeployJob
-#     steps:
-#     - bash: echo $(environment)DeployJob
-
-# - stage: ProdDeploy
-#   dependsOn:
-#   - DevDeploy
-#   - QADeploy
-#   jobs:
-#   - job: ProdDeployJob
-#     steps:
-#     - bash: echo $(environment)DeployJob
+    - bash: java -version
+    - bash: node --version
+    - bash: python --version
+    - bash: mvn -version
+    - bash: ls -R $(Build.ArtifactStagingDirectory)
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: |
+          **/*.yaml
+          **/*.tf
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - bash: ls -R $(Build.ArtifactStagingDirectory)
